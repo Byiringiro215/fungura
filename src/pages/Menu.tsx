@@ -32,6 +32,7 @@ const mealTimes = ["All", "Breakfast", "Lunch", "Dinner", "Snack"];
 export default function Menu() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   const filtered = menuItems.filter((item) => {
     const matchCategory = selectedCategory === "All" || item.category === selectedCategory;
