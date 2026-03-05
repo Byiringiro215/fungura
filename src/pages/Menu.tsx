@@ -1,6 +1,7 @@
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Star, Search } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import foodPizza from "@/assets/food-pizza.jpg";
 import foodSalmon from "@/assets/food-salmon.jpg";
 import foodChicken from "@/assets/food-chicken.jpg";
