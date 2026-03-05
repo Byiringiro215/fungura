@@ -1,6 +1,7 @@
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Star, Search } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import foodPizza from "@/assets/food-pizza.jpg";
 import foodSalmon from "@/assets/food-salmon.jpg";
 import foodChicken from "@/assets/food-chicken.jpg";
@@ -31,6 +32,7 @@ const mealTimes = ["All", "Breakfast", "Lunch", "Dinner", "Snack"];
 export default function Menu() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   const filtered = menuItems.filter((item) => {
     const matchCategory = selectedCategory === "All" || item.category === selectedCategory;
@@ -117,7 +119,7 @@ export default function Menu() {
 
           <div className="grid grid-cols-3 gap-4">
             {filtered.map((item) => (
-              <div key={item.name} className="cursor-pointer rounded-xl bg-card shadow-sm overflow-hidden transition-shadow hover:shadow-md">
+              <div key={item.name} onClick={() => navigate(`/menu/${item.name.toLowerCase().replace(/\s+/g, "-")}`)} className="cursor-pointer rounded-xl bg-card shadow-sm overflow-hidden transition-shadow hover:shadow-md">
                 <div className="relative">
                   <img src={item.img} alt={item.name} className="h-44 w-full object-cover" />
                   {item.tags.length > 0 && (
