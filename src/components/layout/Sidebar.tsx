@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
 import {
   LayoutDashboard,
   ClipboardList,
@@ -18,13 +19,18 @@ const navItems = [
   { label: "Menu", icon: UtensilsCrossed, path: "/menu" },
 ];
 
-const secondaryItems = [
-  { label: "Inventory", icon: Package, path: "/inventory", hasSubmenu: true },
-  { label: "Reviews", icon: Star, path: "/reviews" },
+const inventorySubItems = [
+  { label: "Inventory", path: "/inventory" },
+  { label: "Purchase Order", path: "/inventory?tab=purchase" },
 ];
 
 export default function Sidebar() {
   const location = useLocation();
+  const [inventoryOpen, setInventoryOpen] = useState(
+    location.pathname === "/inventory"
+  );
+
+  const isInventoryActive = location.pathname === "/inventory";
 
   return (
     <aside className="fixed left-0 top-0 z-30 flex h-screen w-[220px] flex-col border-r border-sidebar-border bg-sidebar">
@@ -65,24 +71,49 @@ export default function Sidebar() {
         </ul>
 
         <div className="mt-4 space-y-0.5">
-          {secondaryItems.map((item) => {
-            const active = location.pathname === item.path;
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                  active
-                    ? "bg-sidebar-accent text-accent-foreground"
-                    : "text-sidebar-foreground hover:bg-sidebar-accent/50"
-                }`}
-              >
-                <item.icon className="h-[18px] w-[18px]" />
-                {item.label}
-                {item.hasSubmenu && <ChevronDown className="ml-auto h-4 w-4" />}
-              </Link>
-            );
-          })}
+          {/* Inventory with submenu */}
+          <button
+            onClick={() => setInventoryOpen(!inventoryOpen)}
+            className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+              isInventoryActive
+                ? "bg-sidebar-accent text-accent-foreground"
+                : "text-sidebar-foreground hover:bg-sidebar-accent/50"
+            }`}
+          >
+            <Package className="h-[18px] w-[18px]" />
+            Inventory
+            <ChevronDown className={`ml-auto h-4 w-4 transition-transform ${inventoryOpen ? "rotate-180" : ""}`} />
+          </button>
+          {inventoryOpen && (
+            <div className="ml-9 space-y-0.5">
+              {inventorySubItems.map((sub) => (
+                <Link
+                  key={sub.label}
+                  to={sub.path}
+                  className={`block rounded-lg px-3 py-2 text-sm transition-colors ${
+                    location.pathname + location.search === sub.path
+                      ? "font-semibold text-primary"
+                      : "text-sidebar-foreground hover:bg-sidebar-accent/50"
+                  }`}
+                >
+                  {sub.label}
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {/* Reviews */}
+          <Link
+            to="/reviews"
+            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+              location.pathname === "/reviews"
+                ? "bg-sidebar-accent text-accent-foreground"
+                : "text-sidebar-foreground hover:bg-sidebar-accent/50"
+            }`}
+          >
+            <Star className="h-[18px] w-[18px]" />
+            Reviews
+          </Link>
         </div>
       </nav>
 
