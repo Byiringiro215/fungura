@@ -11,11 +11,11 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children, title, breadcrumb, subtitle }: DashboardLayoutProps) {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen w-full flex-col md:flex-row">
       <Sidebar />
-      <div className="ml-[220px] flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col min-w-0 pt-[72px] md:ml-[220px]">
         <Header title={title} breadcrumb={breadcrumb} subtitle={subtitle} />
-        <main className="flex-1 overflow-auto p-6">{children}</main>
+        <main className="flex-1 overflow-auto p-3 sm:p-4 md:p-6">{children}</main>
       </div>
     </div>
   );
